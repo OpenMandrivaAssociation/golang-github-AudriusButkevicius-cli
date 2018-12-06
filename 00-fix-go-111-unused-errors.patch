@@ -1,0 +1,41 @@
+From 888d21ccd49c154d43523b7ab5b96062e1685218 Mon Sep 17 00:00:00 2001
+From: Fabio Valentini <decathorpe@gmail.com>
+Date: Thu, 19 Jul 2018 18:41:29 +0200
+Subject: [PATCH] app_test: use all declared variables to satisfy the more
+ strict go 1.11
+
+---
+ app_test.go | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/app_test.go b/app_test.go
+index a5842c56..1e2d358c 100644
+--- a/app_test.go
++++ b/app_test.go
+@@ -253,8 +253,11 @@ func TestApp_ParseSliceFlags(t *testing.T) {
+ 		}
+ 		return true
+ 	}
++
+ 	var expectedIntSlice = []int{22, 80}
+ 	var expectedStringSlice = []string{"8.8.8.8", "8.8.4.4"}
++	var expectedFirstArg = "my-arg"
++	var expectedParsedOption = ""
+ 
+ 	if !IntsEquals(parsedIntSlice, expectedIntSlice) {
+ 		t.Errorf("%v does not match %v", parsedIntSlice, expectedIntSlice)
+@@ -263,6 +266,14 @@ func TestApp_ParseSliceFlags(t *testing.T) {
+ 	if !StrsEquals(parsedStringSlice, expectedStringSlice) {
+ 		t.Errorf("%v does not match %v", parsedStringSlice, expectedStringSlice)
+ 	}
++
++	if firstArg != expectedFirstArg {
++		t.Errorf("%v does not match %v", firstArg, expectedFirstArg)
++	}
++
++	if parsedOption != expectedParsedOption {
++		t.Errorf("%v does not match %v", parsedOption, expectedParsedOption)
++	}
+ }
+ 
+ func TestApp_BeforeFunc(t *testing.T) {
